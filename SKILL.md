@@ -1,26 +1,29 @@
 ---
 name: configure-it-out
 description: Use when setting up software. Research, apply, verify.
-version: 0.1.0
-author: Josh LaRue, Hermes Agent
 license: MIT
-platforms: [linux, macos, windows]
+compatibility: Requires an agent with authorized local command and file access; current documentation retrieval is needed for setup research.
 metadata:
-  hermes:
-    tags: [setup, configuration, installation, troubleshooting]
+  author: Josh LaRue
+  version: "0.2.0"
 ---
 # Configure it out
 
 Own the requested working outcome: research the supported route, inspect the real target, prepare understandable changes, execute within scope, and prove the result. A setup script is a means, not the deliverable. Prefer maintained components and supported configuration over bespoke replacements.
 
 ## When to use
-- `/configure-it-out <software, device, service, or desired outcome>`.
+- Ask the agent to use `configure-it-out` for a software, device, service, or desired outcome. Use `/configure-it-out <request>` where the host supports skill slash commands.
 - Install and configure software, finish an incomplete setup, or repair an existing configuration.
 - Don't use as permission for unrelated upgrades, destructive migrations, firmware replacement, account creation, spending, public exposure, reboots, or fleet-wide changes. Obtain consequential choices when required; don't repeatedly ask for settled scope.
 - For research-only or planning-only requests, stop before mutation and label the output accordingly.
 
 ## Prerequisites
-No universal installer, API key, sudo grant, or extra package is required to load this skill. Discover what the specific task needs. Load applicable platform/product skills and obey their constraints. For saved accounts use the existing credential-discovery and vault workflow; never solicit secrets in chat or print them.
+No universal installer, API key, administrative grant, or extra package is required to load this skill. Discover what the specific task needs. Load applicable platform/product instructions when available and obey their constraints. Use only the user's authorized credential manager and the host agent's supported secret-entry path; never solicit secrets in chat or print them. No particular vault, account, vendor, or companion skill is assumed.
+
+## Agent and platform adaptation
+Use the host agent's supported command execution, file reading/search/editing, documentation retrieval, and approval mechanisms. Tool names and installation directories are deliberately unspecified. Discover actual capabilities before choosing commands; never invent a tool or bypass a missing permission by changing execution channels.
+
+Detect the real target OS and shell. Select its documented package manager, service manager, configuration locations and elevation mechanism (such as sudo, an administrator prompt, or an authorized remote operator). Do not assume Bash, systemd, root access, a desktop session, or a local target. This workflow is portable instructions, not a universal executable or a security sandbox. If tools or authorization are unavailable, provide the researched plan and exact blocker, not a fabricated successful setup.
 
 ## Governing principles
 1. Research before mutation. Current official instructions and observed host state outrank remembered commands and dated inventories.
@@ -34,7 +37,7 @@ No universal installer, API key, sudo grant, or extra package is required to loa
 ## Procedure
 
 ### 1. Establish outcome and baseline
-Use `terminal`, `search_files`, and `read_file` for bounded read-only discovery. Confirm target host/device identity and inspect relevant OS/version, architecture, hardware, RAM/disk/VRAM, drivers, dependencies, installation method, configuration, services and active workloads. Inspect only what the task needs; redact secrets rather than dumping environment/config files.
+Use available authorized command and file-inspection tools for bounded read-only discovery. Confirm target host/device identity and inspect relevant OS/version, architecture, hardware, RAM/disk/VRAM, drivers, dependencies, installation method, configuration, services and active workloads. Inspect only what the task needs; redact secrets rather than dumping environment/config files.
 
 Discover existing installs, scripts and accounts before adding replacements. For a broken setup, capture the exact error and a repeatable symptom check; investigate before trying fixes. Label observations separately from hypotheses. Choose sensible routine defaults and ask only for a decision that materially affects outcome or authority.
 
@@ -48,7 +51,7 @@ Compare documentation to the actual installed version. Prefer maintained package
 Done when one appropriate route is selected with source links, compatibility evidence and meaningful trade-offs. "Latest" alone is not a compatibility argument.
 
 ### 3. Prepare a change bundle
-Use `templates/change-plan.md` for nontrivial work. Keep files together in the established project location; use the configured scratch directory for expendable probes. Small supported CLI changes need not become a scripting framework.
+Use `templates/change-plan.md` for nontrivial work. Resolve bundled references relative to this skill's directory, not the current project. Keep deliverables together in the established project location; use the agent's configured scratch location or a securely created OS temporary directory for expendable probes. Small supported CLI changes need not become a scripting framework.
 
 Explain the outcome and proposed changes in plain language before execution: packages/versions, affected paths, configuration, services, network listeners, resources, interruptions, privilege, backups and recovery limits. Preserve existing user configuration and permissions. Validate proposed config with the application's validator when available. Distinguish possible restoration from irreversible effects; do not promise rollback merely because a backup exists.
 
@@ -63,7 +66,7 @@ Complete unprivileged preparation first. Keep downloads, builds and user configu
 
 Prepare the smallest bounded privileged phase. Review its callers, inputs, environment, artifacts, file ownership and parent-directory write access. Ensure the executed payload is the one reviewed; don't leave a root service/helper trusting user-writable executable code. Never run a privileged service as the desktop user accidentally, nor create root-owned files in the user's home unnecessarily.
 
-State exactly what needs elevation and what stays unchanged, then use the supported execution approval/credential path. Aim for one privilege interaction for the planned phase, not one per command. Never request permanent passwordless sudo, disable approval controls, retain a root shell, or rely on refreshed sudo timestamps as a security design. Existing credentials are not permission, and chat consent doesn't replace native gates.
+State exactly what needs elevation and what stays unchanged, then use the supported execution approval/credential path. Aim for one privilege interaction for the planned phase, not one per command. Never request permanent passwordless sudo, disable approval controls, retain a root shell, or rely on refreshed sudo timestamps as a security design. Apply the same least-privilege rule to administrator sessions and other platform-specific elevation mechanisms. Existing credentials are not permission, and chat consent doesn't replace native gates.
 
 If a materially different privileged operation becomes necessary, stop that phase, inspect evidence, and explain the changed scope before requesting renewed approval. Don't repeatedly ask for the same approved scope, retry a denied/expired gate, or switch tools/hosts to bypass it.
 
@@ -92,6 +95,6 @@ Close with a short receipt: what changed, which checks passed, any untested clai
 - Do not install the upstream inspiration skills just to use this workflow.
 
 ## Verification and maintenance
-Load this skill through the actual Hermes skill loader after creation. Check its metadata and referenced files. Use `references/evaluation-cases.md` for behavioral evaluation in disposable fixtures or isolated environments; never run those scenarios against live hosts implicitly. Structural validation is not a behavioral benchmark. Record only tests actually run, and update lessons here after real setup work.
+Load this skill through the host agent's actual skill mechanism after installation, or explicitly provide its instructions and referenced files when native skills are unavailable. Check its metadata and referenced files. Use `references/evaluation-cases.md` for behavioral evaluation in disposable fixtures or isolated environments; never run those scenarios against live hosts implicitly. Structural validation is not a behavioral benchmark. Record only tests actually run, and update lessons here after real setup work.
 
 See `references/sources.md` for design provenance and `templates/change-plan.md` for the task-specific bundle format.

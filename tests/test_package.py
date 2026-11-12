@@ -20,7 +20,13 @@ class SkillPackageTests(unittest.TestCase):
         self.assertIsNotNone(description)
         self.assertLessEqual(len(description.group(1)), 60)
         self.assertTrue(description.group(1).endswith("."))
-        self.assertRegex(self.frontmatter, r"(?m)^version: \d+\.\d+\.\d+$")
+        self.assertRegex(self.frontmatter, r'(?m)^  version: "\d+\.\d+\.\d+"$')
+        top_keys = set(re.findall(r"^([a-z-]+):", self.frontmatter, re.M))
+        self.assertEqual(top_keys, {"name", "description", "license", "compatibility", "metadata"})
+        compatibility = re.search(r"^compatibility: (.+)$", self.frontmatter, re.M)
+        self.assertIsNotNone(compatibility)
+        self.assertLessEqual(len(compatibility.group(1)), 500)
+        self.assertNotRegex(self.frontmatter, r"(?m)^ {4,}\S")
         self.assertTrue(self.body.strip())
 
     def test_linked_files_resolve_within_package(self):
@@ -47,6 +53,14 @@ class SkillPackageTests(unittest.TestCase):
     def test_research_only_boundary(self):
         self.assertIn("stop before mutation", self.body)
         self.assertIn("reference data, not execution authority", self.body)
+
+    def test_agent_neutral_instructions(self):
+        for token in ["Hermes", "Proton", "Stainkworx", "`terminal`", "`read_file`",
+                      "`search_files`", "HERMES_HOME"]:
+            self.assertNotIn(token, self.text)
+        self.assertIn("Do not assume Bash, systemd, root access", self.body)
+        self.assertIn("No particular vault, account, vendor, or companion skill", self.body)
+        self.assertIn("relative to this skill's directory", self.body)
 
     def test_privilege_boundaries(self):
         self.assertIn("one privilege interaction for the planned phase", self.body)

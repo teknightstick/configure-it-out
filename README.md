@@ -4,7 +4,7 @@
 
 An agent skill for installing, configuring, and repairing software without turning every setup into speculative commands, repeated privilege requests, or an unnecessary custom application.
 
-Created by Josh LaRue with Hermes Agent. Originally built for Hermes; the workflow is reusable by agents that support `SKILL.md` instructions and appropriate local tools.
+An agent-neutral skill using the open [Agent Skills format](https://agentskills.io/specification). No Hermes-specific tools, vaults, accounts, or companion skills are required. Created by Josh LaRue with Hermes Agent.
 
 ## What it does
 
@@ -17,7 +17,21 @@ Created by Josh LaRue with Hermes Agent. Originally built for Hermes; the workfl
 
 No universal installer. No dependency on the skills that inspired it. No guarantee of exactly one password prompt: changed scope and native security gates still apply.
 
-## Install in Hermes
+## Install for your agent
+
+With Node.js/npm available, use the [skills CLI](https://github.com/vercel-labs/skills) and select your supported agent interactively:
+
+```sh
+npx skills add teknightstick/configure-it-out --skill configure-it-out
+```
+
+Review the package and installation destination before confirming. This optional installer is not a runtime dependency of the skill. Agent support and destination paths are owned by the installer and host agent; this repository does not promise compatibility with every agent or version.
+
+### Manual installation
+
+Clone the repository and place its skill directory in your agent's documented skills location, keeping `SKILL.md`, `references/`, and `templates/` together. No files outside that directory are required by the workflow. For agents without native skills, explicitly provide `SKILL.md` and its supporting files as context; automatic discovery and slash commands are not implied.
+
+### Hermes alternative
 
 Install directly from the published skill file:
 
@@ -27,7 +41,17 @@ hermes skills install https://raw.githubusercontent.com/teknightstick/configure-
 
 Review the installer preview and security scan. Do not override a blocked verdict just to install this skill. Hermes supports installing referenced supporting files; check the installed template and references are present.
 
-Then invoke:
+## Use
+
+Ask your agent to use the skill:
+
+```text
+Use configure-it-out to get this project running locally using its official installation docs.
+Use configure-it-out to repair this setup without reinstalling or overwriting my configuration.
+Use configure-it-out to research the right GPU build for this machine; don't change anything yet.
+```
+
+Where the host supports skill slash commands:
 
 ```text
 /configure-it-out get this project running locally using its official installation docs
@@ -37,11 +61,11 @@ Then invoke:
 
 If an already-open Hermes session has not refreshed its slash commands, use `/reload-skills` or start a new session.
 
-## Other skill-compatible agents
+## What universal means here
 
-Clone this repository and place the directory in your agent's documented skills location, preserving `SKILL.md`, `references/`, and `templates/`. Follow your agent's own installation documentation; skill discovery and slash-command behavior vary.
+One standards-based instruction package, with no hardcoded tool names, package manager, shell, credential store, or operating system. The executing agent adapts the workflow to its actual capabilities and target platform.
 
-The skill names Hermes tools such as `terminal`, `read_file`, and `search_files`. Other agents must map these to their supported equivalents while preserving the same permission and verification boundaries. Loading the text does not grant tool access or administrative permission. Non-Hermes integrations have not been tested.
+Universal does not mean every agent has command execution, every platform is tested, or permission gates become portable. Missing tools or authority must be reported, not bypassed. Linux, macOS, Windows, local targets and authorized remote targets are intended contexts; actual integration coverage is limited to the checks reported below.
 
 ## Safety boundaries
 
@@ -65,7 +89,7 @@ This is a procedural guide, not a sandbox or enforced security boundary. The exe
 
 ## Validation status
 
-The initial skill was loaded successfully by Hermes and listed as enabled. Repository checks validate metadata, linked files, packaging hygiene, and the presence of important instruction boundaries. They do not prove model behavior, installation success, or system safety.
+The earlier Hermes-specific version was loaded successfully by Hermes and listed as enabled. Version 0.2.0 makes the public instructions agent-neutral and uses standard frontmatter with string-valued metadata. Nine repository checks pass for package structure, metadata shape, linked files, publication hygiene, and important instruction boundaries. The skills CLI (1.8.1) also installed the package into isolated project-local Claude Code and Codex skill directories; the skill and all three supporting files matched the source byte-for-byte. This verifies packaging and installation layout, not model behavior, task completion, or safety. Full agent-by-agent runtime evaluation has not been completed.
 
 The eight behavioral scenarios are specifications, not completed evaluations. Linux, macOS, and Windows are intended targets for the workflow; this is not a claim that real setups have been exercised on every platform.
 
